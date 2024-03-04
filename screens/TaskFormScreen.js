@@ -1,7 +1,7 @@
 import { View, Text, TextInput, StyleSheet, TouchableOpacity } from 'react-native'
 import React, {useState, useEffect} from 'react'
 import Layout from '../components/Layout'
-import {saveTasks, getTask} from '../api'
+import {saveTasks, getTask, updateTask} from '../api'
 
 const TaskFormScreen = ({ navigation, route }) => {
   const [task, setTask] = useState({
@@ -22,15 +22,22 @@ const TaskFormScreen = ({ navigation, route }) => {
   };
 
 
+
   const handleSubmit = async () => {
-     if(!editing){
-        await saveTasks(task)
+    try{
+        if(!editing){
+          await saveTasks(task)
+          navigation.navigate('HomeScreen');
+        }else{
+            await updateTask(route.params.id, task);
+        }
         navigation.navigate('HomeScreen')
-     }else{
-        await
-     }
+    }catch(err){
+      console.error(err);
+    }
   }
   
+
   useEffect(() => {
     if(route.params && route.params.id){
        navigation.setOptions({headerTitle:'Updating a Task'})
@@ -45,6 +52,7 @@ const TaskFormScreen = ({ navigation, route }) => {
     }
   }, [])
 
+
   return (
     <Layout>
 
@@ -55,6 +63,7 @@ const TaskFormScreen = ({ navigation, route }) => {
           onChangeText={(text) => handleChange('title', text)}
           value={task.title}
          />
+
         
       <TextInput 
           style={styles.input} 
@@ -65,9 +74,20 @@ const TaskFormScreen = ({ navigation, route }) => {
           value={task.description}
           />
 
-    <TouchableOpacity style={styles.buttonsave} onPress={handleSubmit}>
-       <Text style={styles.buttonText}>Save Task</Text>
-    </TouchableOpacity>
+      {  
+        !editing ? 
+          (
+            <TouchableOpacity style={styles.buttonsave} onPress={handleSubmit}>
+              <Text style={styles.buttonText}>Save Task</Text>
+            </TouchableOpacity>
+          ) 
+          : 
+          (
+            <TouchableOpacity style={styles.buttonUpdate} onPress={handleSubmit}>
+            <Text style={styles.buttonText}>Update Task</Text>
+          </TouchableOpacity>
+          )
+      }
 
     </Layout>
   )
@@ -99,6 +119,14 @@ const styles = StyleSheet.create({
     color:'#ffffff',
     textAlign:'center',
     fontSize:14
+  },
+  buttonUpdate: {
+    paddingTop: 10,
+    paddingBottom:10,
+    borderRadius:5,
+    marginBottom:3,
+    backgroundColor:'#ccc',
+    width:'100%'
   }
 })
 

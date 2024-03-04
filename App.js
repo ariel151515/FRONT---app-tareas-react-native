@@ -13,7 +13,7 @@ const App = () => {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen 
-            name="Home Screen" 
+            name="HomeScreen" 
             component={HomeScreen} 
             options={
               ({navigation}) => (
