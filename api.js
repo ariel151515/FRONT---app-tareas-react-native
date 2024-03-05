@@ -1,5 +1,9 @@
 const API = 'http://10.0.2.2:3000/tasks'
 
+// http://localhost:3000/tasks
+// 10.0.2.2
+// rnfe   (react native functional expression)
+
 export const getTasks = async () => {
     const res = await fetch(API)
     return await res.json()
@@ -41,6 +45,3 @@ export const updateTask = async (id, newTask) => {
   return await res.json()
 }
 
-
-// http://localhost:3000/tasks
-// 10.0.2.2
