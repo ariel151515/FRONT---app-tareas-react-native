@@ -45,3 +45,4 @@ export const updateTask = async (id, newTask) => {
   return await res.json()
 }
 
+const nueva = async () => {}
